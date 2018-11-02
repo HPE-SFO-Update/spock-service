@@ -11,7 +11,7 @@ A Flask Service App
 
 Type the following in command shell:
 
-	git clone git@github.hpe.com:arjun-kiran/SFO_Update_Service.git
+	git clone git@github.com:HPE-SFO-Update/spock-service.git
 	pip install -r requirements.txt
 
 

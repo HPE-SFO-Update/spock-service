@@ -47,5 +47,27 @@ def download_update(file_name):
 
 # https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https
 if __name__ == '__main__':
-    # HTTPS
-    app.run(host='0.0.0.0', port=443, debug=True, ssl_context=('./security/test_cert.pem', './security/test_key.pem'))
+    parser = argparse.ArgumentParser(description="Runs SFO Spock Update Service")
+    parser.add_argument("--host", required=False, help="Hostname or IP address")
+    parser.add_argument("-c", "--cert", required=False, help="The full path to public ssl certificate")
+    parser.add_argument("-k", "--key", required=False, help="The full path to private ssl certificate")
+    parser.add_argument("-p", "--port", type=int, required=True, help="The port in which the service will be exposed")
+    parser.add_argument("-d", "--debug", required=False, action="store_true", help="The service will be in debug mode")
+    args = parser.parse_args()
+
+    if args.host is None:
+        _host = '0.0.0.0'
+    else:
+        _host = args.host
+
+    _port = args.port
+    _debug = args.debug
+
+    if args.cert is not None and args.key is not None:
+        # HTTPS
+        _private_key = args.key  # ./security/test_key.pem
+        _public_key = args.cert  # ./security/test_cert.pem
+        app.run(host=_host, port=_port, debug=_debug, ssl_context=(_public_key, _private_key))
+    else:
+        # HTTP
+        app.run(host=_host, port=_port, debug=_debug)

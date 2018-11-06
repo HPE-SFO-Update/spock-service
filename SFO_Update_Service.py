@@ -48,7 +48,4 @@ def download_update(file_name):
 # https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https
 if __name__ == '__main__':
     # HTTPS
-    # app.run(host='0.0.0.0', debug=True, ssl_context=('./security/test_cert.pem', './security/test_key.pem'))
-
-    # HTTP
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', port=443, debug=True, ssl_context=('./security/test_cert.pem', './security/test_key.pem'))

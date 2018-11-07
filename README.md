@@ -18,7 +18,11 @@ Type the following in command shell:
 ## Getting Started
 ### Run Flask Environment
 
-Runs Update Service App
+How To Run Update Service App With HTTP
 
-     python SFO_Update_Service.py
+     python SFO_Update_Service.py --port 80
+
+How To Run Update Service App With HTTPS
+
+    python SFO_Update_Service.py --port 443  --cert './security/test_cert.pem' --key './security/test_key.pem'
 

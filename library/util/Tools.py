@@ -27,8 +27,14 @@ def get_version_filename(filename):
     _filename = filename.replace("SFO_FILE_", "").replace(FILE_EXTENSION, "").split("_v_")
     return Version(int(_filename[0]), int(_filename[1]))
 
+def api_version_prefix(api_version):
+    if api_version == 1:
+        return '/v1'
+    raise Exception("Invalid api version")
 
-def check_updated_file_exists(current_major_version, current_minor_version, root_dir):
+
+def check_updated_file_exists(current_major_version, current_minor_version, root_dir, api_version= 1):
+
     _response = {"uri": "/update/download/", "need_to_update": True,
                  "major_version": "", "minor_version": "", "filename": ""}
     current_version = Version(current_major_version, current_minor_version)
@@ -37,14 +43,14 @@ def check_updated_file_exists(current_major_version, current_minor_version, root
     updated_file = list(filter(lambda x: x > current_version, converted_dir))
     updated_file.sort(reverse=True)
     if len(updated_file) == 0:
-        _response["uri"] += current_version.filename
+        _response["uri"] = api_version_prefix(api_version)+ _response["uri"] + current_version.filename
         _response["need_to_update"] = False
         _response["filename"] = current_version.filename
         _response["major_version"] = current_version.major_version
         _response["minor_version"] = current_version.minor_version
         return _response
     else:
-        _response["uri"] += updated_file[0].filename
+        _response["uri"] = api_version_prefix(api_version) + _response["uri"] + updated_file[0].filename
         _response["need_to_update"] = True
         _response["filename"] = updated_file[0].filename
         _response["major_version"] = updated_file[0].major_version

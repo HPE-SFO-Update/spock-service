@@ -16,7 +16,7 @@ socket = SocketIO(app)
 
 @app.route("/")
 def main_root():
-    return Markup("<h1>Smart Fabric Orchestrator SPOCK Update Service is UP<h1>")
+    return Markup("<h1>Smart Fabric Orchestrator SPOCK Update Service is UP</h1>")
 
 
 if __name__ == '__main__':
@@ -37,11 +37,12 @@ if __name__ == '__main__':
     _port = args.port
     _debug = args.debug
 
-    if args.cert is not None and args.key is not None:
+    if args.cert is None and args.key is None:
+        # HTTP
+        socket.run(app, host=_host, port=_port, debug=_debug)
+    else:
         # HTTPS
         _private_key = args.key  # ./security/test_key.pem
         _public_key = args.cert  # ./security/test_cert.pem
         socket.run(app, host=_host, port=_port, debug=_debug, ssl_context=(_public_key, _private_key))
-    else:
-        # HTTP
-        socket.run(app, host=_host, port=_port, debug=_debug)
+

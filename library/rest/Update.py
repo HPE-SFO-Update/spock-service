@@ -3,10 +3,11 @@ from library.util import Tools
 from flask import send_file, jsonify
 from flask import request, abort
 from flask_restful import Resource
+from library.security.Authorization import authorize
 
 
 class UpdateInfoV1(Resource):
-
+    @authorize
     def post(self):
         data = request.json
         version = data["version"]
@@ -15,7 +16,7 @@ class UpdateInfoV1(Resource):
 
 
 class UpdateDownloadV1(Resource):
-
+    @authorize
     def get(self, file_name):
         version_stats = Tools.get_version_filename(file_name)
         path = Tools.get_file(version_stats.major_version, version_stats.minor_version, "./files/")

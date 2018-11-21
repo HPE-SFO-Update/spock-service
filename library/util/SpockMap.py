@@ -31,7 +31,12 @@ class SpockMap(object):
 
     @staticmethod
     def get_latest_spocks(spock_list):
-        sorted_spock_list = sorted(spock_list, key=lambda spock: spock.keys()[0])
+        try:
+            sorted_spock_list = sorted(spock_list, key=lambda spock: spock.keys()[0])
+            lastest = sorted_spock_list[0]
+        except IndexError:
+            latest = None
+        return latest
 
     def add_spock_entry(self, major_version, minor_version, spock_version, spock_url,build_version="0"):
         pass

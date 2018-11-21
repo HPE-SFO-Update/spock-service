@@ -4,11 +4,9 @@ import boto3
 from library.util.MetaClasses import Singleton
 
 REGEX_SPOCK_FILE = r"SPOCKUpdate\d+_\d+_\d+_\d+\.zip"
-
-
 class SpockRetrieve(metaclass=Singleton):
     __instance = None
-
+    
     def __init__(self):
         if SpockRetrieve.__instance is None:
             SpockRetrieve.__instance = self

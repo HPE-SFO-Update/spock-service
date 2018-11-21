@@ -36,6 +36,10 @@ class SpockRetrieve(metaclass=Singleton):
             return self.object_files[file_key]
         return None
 
+    @staticmethod
+    def intialize():
+        SpockRetrieve.get_instance()
+
 
 if __name__ == "__main__":
     resource = SpockRetrieve.get_instance()

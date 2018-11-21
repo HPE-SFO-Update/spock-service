@@ -1,4 +1,6 @@
+from flask import jsonify
 from flask_restful import Resource
+
 
 
 class HeartbeatV1(Resource):
@@ -10,4 +12,4 @@ class HeartbeatV1(Resource):
         This is a heartbeat message
         :return: text message -> "Smart Fabric Orchestrator Update Service"
         """
-        return "Smart Fabric Orchestrator Update Service"
+        return jsonify({"message": "Smart Fabric Orchestrator Update Service"});

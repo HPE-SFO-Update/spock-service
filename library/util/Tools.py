@@ -9,6 +9,13 @@ _version = {"major_version": 0, "minor_version": 0, "filename": "SFO_FILE_0_v_0.
 
 
 def get_file(version, subversion, root_dir):
+    """
+    Searches for file based on version and subversion number
+    :param version: version (integer)
+    :param subversion: sub_version (integer)
+    :param root_dir: directory to search for spock file
+    :return: path to spock file on local system
+    """
     filtered_dir = list(filter(lambda x: re.match(REGEX_SFO_FILE, x) is not None, os.listdir(root_dir)))
     file_name = compile_file_name(version, subversion)
     if file_name in filtered_dir:
@@ -18,23 +25,61 @@ def get_file(version, subversion, root_dir):
 
 
 def compile_file_name(major_version, minor_version):
+    """
+
+    :param major_version:
+    :param minor_version:
+    :return:
+    """
     return "SFO_FILE_{major_version}_v_{minor_version}{extension}".format(major_version=major_version,
                                                                           minor_version=minor_version,
                                                                           extension=FILE_EXTENSION)
 
 
+def compile_spock_name(sfo_major_version, sfo_minor_version, sfo_build_version, spock_version):
+    return "SPOCKUpdate{sfo_major_version}_{sfo_minor_version}_{sfo_build_version}_{spock_version}.zip".format(sfo_major_version=sfo_major_version,
+                                                                                                               sfo_minor_version=sfo_minor_version,
+                                                                                                               sfo_build_version=sfo_build_version,
+                                                                                                               spock_version=spock_version)
+
+
 def get_version_filename(filename):
+    """
+    Parses file name to figure out version
+    :param filename: spock file name
+    :return: version object
+    """
     _filename = filename.replace("SFO_FILE_", "").replace(FILE_EXTENSION, "").split("_v_")
     return Version(int(_filename[0]), int(_filename[1]))
 
+
 def api_version_prefix(api_version):
+    """
+    Adds api version to uri as a prefix
+    :param api_version: api version
+    :return: returns api version prefix
+    """
     if api_version == 1:
         return '/v1'
     raise Exception("Invalid api version")
 
 
-def check_updated_file_exists(current_major_version, current_minor_version, root_dir, api_version= 1):
-
+def check_updated_file_exists(current_major_version, current_minor_version, root_dir, api_version=1):
+    """
+    Checks if the file version in question needs to be updated
+    :param current_major_version: major version (integer)
+    :param current_minor_version: minor version (integer)
+    :param root_dir: directory of the spock files are located
+    :param api_version: api version (integer)
+    :return: json response
+    {
+        "uri":<>,
+        "need_to_update":<>,
+        "filename":<>,
+        "major_version":<>,
+        "minor_version":<>
+    }
+    """
     _response = {"uri": "/update/download/", "need_to_update": True,
                  "major_version": "", "minor_version": "", "filename": ""}
     current_version = Version(current_major_version, current_minor_version)
@@ -87,6 +132,9 @@ class Version(object):
     def __str__(self):
         return compile_file_name(self.major_version, self.minor_version)
 
+
+class SpockVersion(object):
+    pass
 
 
 if __name__ == "__main__":

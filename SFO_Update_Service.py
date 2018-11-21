@@ -22,9 +22,6 @@ socket = SocketIO(app)
 socket.on_namespace(Login('/v1/login'))
 
 
-
-
-
 if __name__ == '__main__':
     # https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https
     parser = argparse.ArgumentParser(description="Runs SFO Spock Update Service")

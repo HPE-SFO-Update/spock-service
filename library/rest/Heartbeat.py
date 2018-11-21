@@ -2,7 +2,6 @@ from flask import jsonify
 from flask_restful import Resource
 
 
-
 class HeartbeatV1(Resource):
     """
     The class for heartbeat version 1 uri

@@ -1,22 +1,26 @@
 #!/usr/bin/env python3
 import argparse
-from flask import Flask, Markup
+from flask import Flask
 from flask_restful import Api
 from flask_socketio import SocketIO
+# from flask_login import LoginManager
+
 from library.rest.Heartbeat import HeartbeatV1
 from library.rest.Update import UpdateInfoV1, UpdateDownloadV1
+from library.aws.FileSearch import SpockRetrieve
+# from library.rest.LoginRest import LoginRestV1
+# from library.socket.LoginSocket import Login
 
 app = Flask(__name__)
+# app.config['SECRET_KEY'] = 'secret!'
+# LoginManager(app)
 api = Api(app)
 api.add_resource(HeartbeatV1, '/v1/heartbeat')
 api.add_resource(UpdateInfoV1, '/v1/update/info')
 api.add_resource(UpdateDownloadV1, '/v1/update/download/<file_name>')
+# api.add_resource(LoginRestV1, '/v1/rest/login')
 socket = SocketIO(app)
-
-
-@app.route("/")
-def main_root():
-    return Markup("<h1>Smart Fabric Orchestrator SPOCK Update Service is UP</h1>")
+# socket.on_namespace(Login('/v1/login'))
 
 
 if __name__ == '__main__':
@@ -36,6 +40,8 @@ if __name__ == '__main__':
 
     _port = args.port
     _debug = args.debug
+
+    # SpockRetrieve.intialize()
 
     if args.cert is None and args.key is None:
         # HTTP

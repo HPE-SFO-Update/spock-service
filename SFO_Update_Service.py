@@ -7,7 +7,7 @@ from flask_socketio import SocketIO
 
 from library.rest.Heartbeat import HeartbeatV1
 from library.rest.Update import UpdateInfoV1, UpdateDownloadV1
-from library.aws.FileSearch import SpockRetrieve
+# from library.aws.FileSearch import SpockRetrieve
 # from library.rest.LoginRest import LoginRestV1
 # from library.socket.LoginSocket import Login
 

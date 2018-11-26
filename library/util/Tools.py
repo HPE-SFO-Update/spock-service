@@ -2,6 +2,8 @@
 import os
 import re
 import copy
+from library.util.SpockMap import SpockMap, parse_sfo_version
+
 
 FILE_EXTENSION = ".zip"
 REGEX_SFO_FILE = r"SFO_FILE_\d+_v_\d+\.zip"
@@ -101,6 +103,26 @@ def check_updated_file_exists(current_major_version, current_minor_version, root
         _response["major_version"] = updated_file[0].major_version
         _response["minor_version"] = updated_file[0].minor_version
         return _response
+
+
+def check_update_file_map(sfo_version, spock_version):
+    _response = {"uri": "", "need_to_update": True,
+                 "sfo_version": "", "spock_version": ""}
+    _map = SpockMap.get_instance()
+    try:
+        major, minor, build = parse_sfo_version(sfo_version)
+        spock_list = _map.look_up_spocks(major_version=major, minor_version=minor, build_version=build)
+        spock_item = SpockMap.get_latest_spock(spock_list)
+
+        if int(spock_version) >= int(spock_item[0]):
+            _response["need_to_update"] = False
+
+        _response["sfo_version"] = sfo_version
+        _response["uri"] = spock_item[1]
+        _response["spock_version"] = spock_item[0]
+    except (TypeError, AttributeError, KeyError, ValueError):
+        return {"message": "invalid info given"}
+    return _response
 
 
 class Version(object):

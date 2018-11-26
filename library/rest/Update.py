@@ -17,9 +17,9 @@ class UpdateInfoV1(Resource):
         :return: json response
         """
         data = request.json
-        version = data["version"]
-        sub_version = data["sub_version"]
-        return jsonify(Tools.check_updated_file_exists(version, sub_version, "./files/"))
+        sfo_version = data["sfo_version"]
+        spock_version = data["spock_version"]
+        return jsonify(Tools.check_update_file_map(sfo_version, spock_version))
 
 
 class UpdateDownloadV1(Resource):

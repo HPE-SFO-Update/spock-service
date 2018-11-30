@@ -1,4 +1,5 @@
 import argparse
+import boto3
 from library.util.SpockMap import SpockMap
 from library.util.SpockMap import parse_sfo_version
 
@@ -13,7 +14,7 @@ if __name__ == "__main__":
 
     major, minor, build = parse_sfo_version(args.sfo)
     spock_map = SpockMap()
-    spock_map.open(args.path)
-    spock_map.add_spock_entry(major_version=major, minor_version=minor, build_version=build, spock_version=args.spock,
+    SpockMap.open(args.path)
+    SpockMap.get_instance().add_spock_entry(major_version=major, minor_version=minor, build_version=build, spock_version=args.spock,
                               spock_url=args.url)
-    spock_map.write(args.path)
+    SpockMap.get_instance().write(args.path)

@@ -3,14 +3,14 @@ from library.util import Tools
 from flask import send_file, jsonify
 from flask import request, abort
 from flask_restful import Resource
-from library.security.Authorization import authorize
+from library.multithreads.Scheduler import check_spock_map
 
 
 class UpdateInfoV1(Resource):
     """
     The class for Update Info version 1 uri
     """
-
+    @check_spock_map
     def post(self):
         """
         the request will send the following json -> {"version":<version number>,"sub_version":<sub_version number>}

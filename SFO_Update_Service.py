@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import sched
 from flask import Flask
 from flask_restful import Api
 from flask_socketio import SocketIO
@@ -7,7 +8,8 @@ from flask_socketio import SocketIO
 
 from library.rest.Heartbeat import HeartbeatV1
 from library.rest.Update import UpdateInfoV1
-from library.util.SpockMap import SpockMap
+from library.aws.FileSearch import SpockRetrieve
+from library.multithreads.Scheduler import SchedulerUpdateMap
 
 
 app = Flask(__name__)
@@ -36,7 +38,8 @@ if __name__ == '__main__':
     _port = args.port
     _debug = args.debug
 
-    SpockMap.get_instance().open('./config/map.json')
+    SpockRetrieve.initialize()
+    SchedulerUpdateMap.spock_update()
 
     if args.cert is None and args.key is None:
         # HTTP

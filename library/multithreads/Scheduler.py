@@ -42,8 +42,7 @@ class SchedulerUpdateMap(object, metaclass=Singleton):
 
     @staticmethod
     def spawn():
-        if SchedulerUpdateMap.empty():
-            Thread(target=SchedulerUpdateMap.get_instance().setup_schedule).start()
+        Thread(target=SchedulerUpdateMap.spock_update).start()
 
     @staticmethod
     def empty():

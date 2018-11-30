@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import re
+from flask import jsonify, make_response, abort
 from library.util.SpockMap import SpockMap, parse_sfo_version
 
 
@@ -113,6 +114,9 @@ def check_update_file_map(sfo_version, spock_version):
         spock_list = _map.look_up_spocks(major_version=major, minor_version=minor, build_version=build)
         spock_item = SpockMap.get_latest_spock(spock_list)
 
+        if spock_item is None:
+            abort(make_response(jsonify({"message": "Smart Fabric Orchestrator Version is invalid"}), 400))
+
         if int(spock_version) >= int(spock_item[0]):
             _response["need_to_update"] = False
 
@@ -120,7 +124,8 @@ def check_update_file_map(sfo_version, spock_version):
         _response["uri"] = spock_item[1]
         _response["spock_version"] = spock_item[0]
     except (TypeError, AttributeError, KeyError, ValueError):
-        return {"message": "invalid info given"}
+        abort(make_response(jsonify({"message": "Invalid info given"}), 400))
+
     return _response
 
 

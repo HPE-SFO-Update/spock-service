@@ -7,7 +7,6 @@ class HeartbeatV1(Resource):
     """
     The class for heartbeat version 1 uri
     """
-    @check_spock_map
     def get(self):
         """
         This is a heartbeat message

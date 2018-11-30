@@ -38,7 +38,6 @@ if __name__ == '__main__':
     _port = args.port
     _debug = args.debug
 
-    SpockRetrieve.initialize()
     SchedulerUpdateMap.spock_update()
 
     if args.cert is None and args.key is None:

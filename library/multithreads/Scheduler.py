@@ -1,11 +1,12 @@
 import sched, time
+import os
 from threading import Thread
 from library.constants.Time import HOUR,DAY,WEEK
 from library.util.MetaClasses import Singleton
 from library.aws.FileSearch import SpockRetrieve
 from library.util.SpockMap import SpockMap
 from library.util.Tools import path_from_top_directory
-from library.constants.Map import MAP_PATH
+from library.constants.Map import MAP_PATH, CONFIG_PATH
 
 
 class SchedulerUpdateMap(object, metaclass=Singleton):
@@ -26,6 +27,9 @@ class SchedulerUpdateMap(object, metaclass=Singleton):
 
     @staticmethod
     def spock_update():
+        if os.path.exists(path_from_top_directory(CONFIG_PATH)) is False:
+            os.makedirs(path_from_top_directory(CONFIG_PATH))
+
         SpockRetrieve.initialize()
         SpockRetrieve.download_map()
         SpockMap.open(path_from_top_directory(MAP_PATH))

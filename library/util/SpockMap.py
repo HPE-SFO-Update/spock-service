@@ -3,7 +3,7 @@ from library.util.MetaClasses import Singleton
 
 
 #
-# map.json
+# SFO-spock-ver-map.json
 # {"major_version":{"minor_version":{"build_version":[{"spock_version":"url"}]}}
 #
 # Example:
@@ -15,6 +15,7 @@ class SpockMap(object, metaclass=Singleton):
         if SpockMap.__instance is None:
             SpockMap.__instance = self
             self.data = {}
+            self.file_path = None
         else:
             raise Exception("Use SpockMap.get_instance()")
 
@@ -25,16 +26,25 @@ class SpockMap(object, metaclass=Singleton):
 
         return SpockMap.__instance
 
-    def open(self, filepath):
+    @staticmethod
+    def open(file_path):
+        SpockMap.get_instance()._open(file_path)
+
+    def _open(self, file_path):
+        self.file_path = file_path
         try:
-            with open(filepath, 'r') as file:
+            with open(self.file_path, 'r') as file:
                 self.data = json.load(file)
         except json.JSONDecodeError:
-            self.write(filepath)
+            self.write(self.file_path)
 
-    def write(self, filepath):
-        with open(filepath, 'w') as file:
+    def write(self, file_path):
+        self.file_path = file_path
+        with open(file_path, 'w') as file:
             json.dump(self.data, fp=file)
+
+    def update(self):
+        self.open(self.file_path)
 
     def look_up_spocks(self, major_version, minor_version, build_version="0"):
         spock_list = []

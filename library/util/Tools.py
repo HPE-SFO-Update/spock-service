@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import os
 import re
-import copy
 from library.util.SpockMap import SpockMap, parse_sfo_version
 
 
@@ -155,8 +154,17 @@ class Version(object):
         return compile_file_name(self.major_version, self.minor_version)
 
 
-class SpockVersion(object):
-    pass
+def get_top_directory():
+    special_dirs = ['library', 'files', 'security', 'config']
+    current_directory = os.getcwd()
+    for sp_dir in special_dirs:
+        if sp_dir in current_directory:
+            return current_directory.split(sp_dir)[0]
+    return current_directory
+
+
+def path_from_top_directory(path):
+    return os.path.join(get_top_directory(), path)
 
 
 if __name__ == "__main__":

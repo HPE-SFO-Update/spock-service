@@ -3,6 +3,8 @@ import os
 import re
 from flask import jsonify, make_response, abort
 from library.util.SpockMap import SpockMap, parse_sfo_version
+from library.multithreads.DownloadManager import DownloadManager
+from library.constants.Uri import HOSTNAME_BASE, UPDATE_DOWNLOAD_V1_BASE
 
 
 FILE_EXTENSION = ".zip"
@@ -117,11 +119,12 @@ def check_update_file_map(sfo_version, spock_version):
         if spock_item is None:
             abort(make_response(jsonify({"message": "Smart Fabric Orchestrator Version is invalid"}), 400))
 
+        DownloadManager.get_instance().download(spock_item[1])
         if int(spock_version) >= int(spock_item[0]):
             _response["need_to_update"] = False
 
         _response["sfo_version"] = sfo_version
-        _response["uri"] = spock_item[1]
+        _response["uri"] = "https://" + HOSTNAME_BASE + UPDATE_DOWNLOAD_V1_BASE + spock_item[1]
         _response["spock_version"] = spock_item[0]
     except (TypeError, AttributeError, KeyError, ValueError):
         abort(make_response(jsonify({"message": "Invalid info given"}), 400))
@@ -157,19 +160,6 @@ class Version(object):
 
     def __str__(self):
         return compile_file_name(self.major_version, self.minor_version)
-
-
-def get_top_directory():
-    special_dirs = ['library', 'files', 'security', 'config']
-    current_directory = os.getcwd()
-    for sp_dir in special_dirs:
-        if sp_dir in current_directory:
-            return current_directory.split(sp_dir)[0]
-    return current_directory
-
-
-def path_from_top_directory(path):
-    return os.path.join(get_top_directory(), path)
 
 
 if __name__ == "__main__":

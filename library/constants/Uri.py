@@ -1,0 +1,7 @@
+HOSTNAME_BASE = "sfo.hpe-spock.com"
+HEARTBEAT_V1 = "/v1/heartbeat"
+UPDATE_INFO_V1 = "/v1/update/info"
+
+UPDATE_DOWNLOAD_V1_BASE = "/v1/update/download/"
+UPDATE_DOWNLOAD_V1_PARAM = "<file_name>"
+UPDATE_DOWNLOAD_V1 = UPDATE_DOWNLOAD_V1_BASE + UPDATE_DOWNLOAD_V1_PARAM

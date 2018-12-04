@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import argparse
 import sched
+import os
+import sys
 from flask import Flask
 from flask_restful import Api
 from flask_socketio import SocketIO
@@ -8,15 +10,19 @@ from flask_socketio import SocketIO
 
 from library.rest.Heartbeat import HeartbeatV1
 from library.rest.Update import UpdateInfoV1
-from library.aws.FileSearch import SpockRetrieve
+from library.rest.Update import UpdateDownloadV1
+from library.constants.Uri import HEARTBEAT_V1, UPDATE_DOWNLOAD_V1, UPDATE_INFO_V1
 from library.multithreads.Scheduler import SchedulerUpdateMap
+from library.multithreads.DownloadManager import DownloadManager
+from library.constants.Download import DOWNLOAD_PATH
 
 
 app = Flask(__name__)
 # app.config['SECRET_KEY'] = 'secret!'
 api = Api(app)
-api.add_resource(HeartbeatV1, '/v1/heartbeat')
-api.add_resource(UpdateInfoV1, '/v1/update/info')
+api.add_resource(HeartbeatV1, HEARTBEAT_V1)
+api.add_resource(UpdateInfoV1, UPDATE_INFO_V1)
+api.add_resource(UpdateDownloadV1, UPDATE_DOWNLOAD_V1)
 socket = SocketIO(app)
 
 
@@ -38,6 +44,7 @@ if __name__ == '__main__':
     _port = args.port
     _debug = args.debug
 
+    DownloadManager.get_instance().set_download_dir(DOWNLOAD_PATH)
     SchedulerUpdateMap.spock_update()
 
     if args.cert is None and args.key is None:

@@ -3,7 +3,7 @@ import re
 import boto3
 from botocore.exceptions import ClientError
 from library.util.MetaClasses import Singleton
-from library.util.Tools import path_from_top_directory
+from library.util.Path import path_from_top_directory
 from library.constants.Map import MAP_PATH
 
 

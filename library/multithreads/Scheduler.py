@@ -5,7 +5,7 @@ from library.constants.Time import HOUR,DAY,WEEK
 from library.util.MetaClasses import Singleton
 from library.aws.FileSearch import SpockRetrieve
 from library.util.SpockMap import SpockMap
-from library.util.Tools import path_from_top_directory
+from library.util.Path import path_from_top_directory
 from library.constants.Map import MAP_PATH, CONFIG_PATH
 
 
